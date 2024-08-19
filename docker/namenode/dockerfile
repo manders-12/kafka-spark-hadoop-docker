@@ -1,0 +1,5 @@
+FROM datanode
+RUN sudo wget https://dlcdn.apache.org/spark/spark-3.5.2/spark-3.5.2-bin-hadoop3.tgz --no-check-certificate
+RUN mkdir /opt/spark
+RUN mv spark-3.5.2-bin-hadoop3.tgz /opt/spark/
+RUN tar -zxvf /opt/spark/spark-3.5.2-bin-hadoop3.tgz -C /opt/spark

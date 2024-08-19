@@ -1,0 +1,73 @@
+version: "2"
+services:
+   namenode:
+      image: namenode
+      hostname: namenode
+      volumes:
+        - ./start-namenode.sh:/opt/start-namenode.sh
+      ports:
+        - 9870:9870
+      env_file:
+        - ./config
+      environment:
+          ENSURE_NAMENODE_DIR: "/tmp/hadoop-root/dfs/name"
+      command: bash -c "/opt/start-namenode.sh"
+      networks:
+        - kafka_network
+#Secondary Namenode commented out for testing and performance (i can only run so many of these containers at once)
+#   secondaryNamenode:
+#      image: namenode-test
+#      hostname: namenode
+#      volumes:
+#        - ./Makefile:/opt/hadoop/Makefile
+#        - ./start-secondarynamenode.sh:/opt/start-secondarynamenode.sh
+#      ports:
+#        - 9868:9868
+#      env_file:
+#        - ./config
+#      environment:
+#          ENSURE_NAMENODE_DIR: "/tmp/hadoop-root/dfs/name"
+#      command: bash -c "/opt/start-secondarynamenode.sh"
+#      networks:
+#        - kafka_network
+   datanode_1:
+      image: datanode
+      command: bash -c "/opt/start-services.sh"
+      env_file:
+        - ./config     
+      volumes:
+        - ./start-services.sh:/opt/start-services.sh
+      networks:
+        - kafka_network
+   datanode_2:
+      image: datanode
+      command: bash -c "sudo sed -i 's|# Timeout in ms for connecting to zookeeper|broker.id=1|' /opt/kafka/kafka_2.13-3.8.0/config/server.properties && /opt/start-services.sh"
+      env_file:
+        - ./config     
+      volumes:
+        - ./start-services.sh:/opt/start-services.sh
+      networks:
+        - kafka_network
+   datanode_3:
+      image: datanode
+      command: bash -c "sudo sed -i 's|# Timeout in ms for connecting to zookeeper|broker.id=2|' /opt/kafka/kafka_2.13-3.8.0/config/server.properties && /opt/start-services.sh"
+      env_file:
+        - ./config     
+      volumes:
+        - ./start-services.sh:/opt/start-services.sh
+      networks:
+        - kafka_network
+   resourcemanager:
+      image: apache/hadoop:3
+      hostname: resourcemanager
+      command: [ "yarn", "resourcemanager" ]
+      ports:
+        - 8088:8088
+      env_file:
+        - ./config
+      networks:
+        - kafka_network
+        
+networks:
+  kafka_network:
+    driver: bridge

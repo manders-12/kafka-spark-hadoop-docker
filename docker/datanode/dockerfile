@@ -1,0 +1,12 @@
+FROM apache/hadoop:3
+RUN sudo sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-* 
+RUN sudo sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* 
+RUN sudo yum install -y python3
+RUN sudo unlink /usr/bin/python
+RUN sudo ln -s /usr/bin/python3 /usr/bin/python
+RUN export KAFKA_HOME=/opt/kafka/kafka_2.13-3.8.0
+RUN export PATH=$PATH:/opt/kafka/kafka_2.13-3.8.0/bin
+RUN sudo wget https://downloads.apache.org/kafka/3.8.0/kafka_2.13-3.8.0.tgz
+RUN mkdir /opt/kafka
+RUN sudo mv kafka_2.13-3.8.0.tgz /opt/kafka/
+RUN sudo tar -zxvf /opt/kafka/kafka_2.13-3.8.0.tgz -C /opt/kafka
