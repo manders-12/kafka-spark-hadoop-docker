@@ -1,6 +1,8 @@
 ﻿# Hadoop/Spark/Kafka Cluster on Docker
 
-Quick setup for a cluster running Hadoop (with YARN), Spark, and Kafka. Not currently set up to have persistent storage. For testing and education
+Quick setup for a cluster running Hadoop (with YARN), Spark, and Kafka. Not currently set up to have persistent storage. For testing and education.
+
+With current setup, Zookeeper and Spark Driver run on the Namenode, and a kafka broker runs on each datanode (probably not the best setup but now I can test all 3!)
 
 # Prerequisites
 
