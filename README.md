@@ -1,14 +1,16 @@
 ﻿# Hadoop/Spark/Kafka Cluster on Docker
 
-Quick setup for a cluster running Hadoop (with YARN), Spark, and Kafka. Not currently set up to have persistent storage.
+Quick setup for a cluster running Hadoop (with YARN), Spark, and Kafka. Not currently set up to have persistent storage. For testing and education
 
 # Prerequisites
 
 This was created on Docker in Windows 10, not tested on other platforms.
 
+Initial configuration has 3 datanodes and no secondarynamenode. Disable datanodes by commenting them out in `docker-compose.yaml` for better performance or un-comment the secondary namenode.
+
 Start by pulling the required image:
 
-    docker pull apache/hadoop
+    docker pull apache/hadoop:3
 
 ## Setup
 
